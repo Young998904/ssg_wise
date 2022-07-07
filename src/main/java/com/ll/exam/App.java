@@ -1,11 +1,12 @@
 package com.ll.exam;
 
+import java.lang.reflect.WildcardType;
 import java.util.Scanner;
 
 public class App {
     public void run() {
         // 마지막 명언 글의 번호 (run 함수가 끝날 때까지 유지됨)
-        int wiseSayingLastId = 1;
+        int wiseSayingLastId = 0;
         System.out.println("=== 명언 SSG ===");
         Scanner sc = new Scanner(System.in);
 
@@ -19,11 +20,15 @@ public class App {
                     break outer;
                 case "등록" :
                     System.out.printf("명언 : ");
-                    String wise_saying = sc.nextLine().trim();
+                    String content = sc.nextLine().trim();
                     System.out.printf("작가 : ");
-                    String who = sc.nextLine().trim();
+                    String author = sc.nextLine().trim();
+                    int id = ++wiseSayingLastId; // 마지막 번호 하나 증가 후 id에 담아둠
+
+                    WiseSaying wiseSaying = new WiseSaying(id, content, author);
+                    System.out.println(wiseSaying);
+
                     System.out.printf("%d번 명언이 등록되었습니다. \n", wiseSayingLastId);
-                    wiseSayingLastId ++;
                     break; // break 하지 않으면 하위 case 들도 수행됨
             }
         }
