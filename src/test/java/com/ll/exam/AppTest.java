@@ -60,4 +60,13 @@ public class AppTest {
         // 1단계 : getIntParam 을 통해 반환 받는 값이 1 이어야 함
         assertEquals(1, id);
     }
+    @Test
+    public void Rq_getIntParam_2() { // 검색 기능
+        Rq rq = new Rq("검색?id=10&no=1");
+        int id = rq.getIntParam("id", 0);
+        int no = rq.getIntParam("no", 0);
+
+        assertEquals(10, id);
+        assertEquals(1, no);
+    }
 }
