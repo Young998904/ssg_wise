@@ -69,4 +69,12 @@ public class AppTest {
         assertEquals(10, id);
         assertEquals(1, no);
     }
+    @Test
+    public void Rq_getPath() { // 명령어 획득
+        Rq rq = new Rq("삭제?id=1");
+
+        String path = rq.getPath();
+        assertEquals("삭제", path);
+
+    }
 }
