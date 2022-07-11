@@ -51,4 +51,13 @@ public class AppTest {
 
         assertEquals("안녕", rs);
     }
+
+    @Test
+    public void Rq_getIntParam() { // 삭제 기능
+        Rq rq = new Rq("삭제?id=1"); // url에서 ?id=1 을 파라미터라고 함
+        int id = rq.getIntParam("id", 0);
+
+        // 1단계 : getIntParam 을 통해 반환 받는 값이 1 이어야 함
+        assertEquals(1, id);
+    }
 }
