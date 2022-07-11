@@ -21,7 +21,9 @@ public class App {
             System.out.printf("명령 : ");
             String cmd = sc.nextLine().trim();
 
-            switch (cmd) {
+            Rq rq = new Rq(cmd);
+
+            switch (rq.getPath()) {
                 case "종료" :
                     break outer;
                 case "등록" :
@@ -43,6 +45,31 @@ public class App {
                         WiseSaying wiseSaying_ = wiseSayings.get(i);
                         System.out.printf("%d / %s / %s \n", wiseSaying_.id, wiseSaying_.content, wiseSaying_.author);
                     }
+                    break;
+                case "삭제" :
+                    // 명령어 형태 : 삭제?id=(삭제할 번호)
+                    int paramId = rq.getIntParam("id", 0);
+                    // id 를 입력했으면 해당 값이, 아니면 디폴트 값 0 이 나옴
+                    if (paramId == 0) { // 입력된 id가 없다면 작업 중단
+                        System.out.println("id를 입력해주세요");
+                        continue;
+                    }
+
+                    WiseSaying wiseSaying__ = null;
+
+                    for (WiseSaying wiseSaying___ : wiseSayings) {
+                        if (wiseSaying___.id == paramId) { // 찾음
+                            wiseSaying__ = wiseSaying___;
+                        }
+                    }
+                    if (wiseSaying__ == null) {
+                        System.out.printf("%d번 명언은 존재하지 않습니다...\n", paramId);
+                    }
+
+                    wiseSayings.remove(wiseSaying__);
+
+                    System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
+                    break;
             }
         }
         sc.close();
