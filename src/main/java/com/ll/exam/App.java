@@ -66,13 +66,8 @@ public class App {
             return;
         }
 
-        WiseSaying foundWiseSaying = null;
+        WiseSaying foundWiseSaying = findById(paramId);
 
-        for (WiseSaying wiseSaying : wiseSayings) {
-            if (wiseSaying.id == paramId) { // 찾음
-                foundWiseSaying = wiseSaying;
-            }
-        }
         if (foundWiseSaying == null) {
             System.out.printf("%d번 명언은 존재하지 않습니다...\n", paramId);
             return;
@@ -81,6 +76,17 @@ public class App {
         wiseSayings.remove(foundWiseSaying);
 
         System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
+    }
+
+    // 삭제 & 수정 기능에서 공통적으로 쓰일 메서드 삭제 기능에서 따로 분리
+    private WiseSaying findById(int paramId) {
+        // url에 입력된 id 에 해당하는 명언 객체  찾기
+        for (WiseSaying wiseSaying : wiseSayings) {
+            if (wiseSaying.id == paramId) { // 찾음
+                return wiseSaying;
+            }
+        }
+        return null;
     }
 
     private void write(Rq rq) { // 혹시 모르니 rq 추
