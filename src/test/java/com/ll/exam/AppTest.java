@@ -51,5 +51,4 @@ public class AppTest {
 
         assertEquals("안녕", rs);
     }
-
 }
