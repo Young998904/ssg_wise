@@ -5,14 +5,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class WiseSayingController {
-    private int wiseSayingLastId;
-    private List<WiseSaying> wiseSayings;
-
     private Scanner sc;
+    private WiseSayingRepository wiseSayingRepository;
 
     WiseSayingController (Scanner sc) {
-        wiseSayingLastId = 0;
-        wiseSayings = new ArrayList<>();
+        wiseSayingRepository = new WiseSayingRepository();
         this.sc = sc;
     }
 
@@ -26,7 +23,7 @@ public class WiseSayingController {
             return;
         }
 
-        WiseSaying foundWiseSaying = findById(paramId);
+        WiseSaying foundWiseSaying = wiseSayingRepository.findById(paramId);
 
         if (foundWiseSaying == null) {
             System.out.printf("%d번 명언은 존재하지 않습니다...\n", paramId);
@@ -47,8 +44,8 @@ public class WiseSayingController {
     public void list(Rq rq) {
         System.out.println("번호 / 작가 / 명언");
         System.out.println("===================");
-        for (int i = wiseSayings.size()-1; i >= 0; i--) {
-            WiseSaying wiseSaying_ = wiseSayings.get(i);
+        for (int i = wiseSayingRepository.wiseSayings.size()-1; i >= 0; i--) {
+            WiseSaying wiseSaying_ = wiseSayingRepository.wiseSayings.get(i);
             System.out.printf("%d / %s / %s \n", wiseSaying_.id, wiseSaying_.content, wiseSaying_.author);
         }
     }
@@ -62,39 +59,30 @@ public class WiseSayingController {
             return;
         }
 
-        WiseSaying foundWiseSaying = findById(paramId);
+        WiseSaying foundWiseSaying = wiseSayingRepository.findById(paramId);
 
         if (foundWiseSaying == null) {
             System.out.printf("%d번 명언은 존재하지 않습니다...\n", paramId);
             return;
         }
 
-        wiseSayings.remove(foundWiseSaying);
+        wiseSayingRepository.wiseSayings.remove(foundWiseSaying);
 
         System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
     }
 
-    // 삭제 & 수정 기능에서 공통적으로 쓰일 메서드 삭제 기능에서 따로 분리
-    private WiseSaying findById(int paramId) {
-        // url에 입력된 id 에 해당하는 명언 객체  찾기
-        for (WiseSaying wiseSaying : wiseSayings) {
-            if (wiseSaying.id == paramId) { // 찾음
-                return wiseSaying;
-            }
-        }
-        return null;
-    }
+
 
     public void write(Rq rq) { // 혹시 모르니 rq 추
         System.out.printf("명언 : ");
         String content = sc.nextLine().trim();
         System.out.printf("작가 : ");
         String author = sc.nextLine().trim();
-        int id = ++wiseSayingLastId; // 마지막 번호 하나 증가 후 id에 담아둠
+        int id = ++wiseSayingRepository.wiseSayingLastId; // 마지막 번호 하나 증가 후 id에 담아둠
 
         WiseSaying wiseSaying = new WiseSaying(id, content, author);
-        wiseSayings.add(wiseSaying);
+        wiseSayingRepository.wiseSayings.add(wiseSaying);
 
-        System.out.printf("%d번 명언이 등록되었습니다. \n", wiseSayingLastId);
+        System.out.printf("%d번 명언이 등록되었습니다. \n", wiseSayingRepository.wiseSayingLastId);
     }
 }
