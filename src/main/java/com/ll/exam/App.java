@@ -43,9 +43,40 @@ public class App {
                 case "삭제" :
                     remove(rq);
                     break;
+                case "수정" :
+                    modify(rq);
+                    break;
             }
         }
         sc.close();
+    }
+
+    private void modify(Rq rq) { // remove 와 유사
+        // 명령어 형태 : 수정?id=(수정할 번호)
+        int paramId = rq.getIntParam("id", 0);
+
+        // id 를 입력했으면 해당 값이, 아니면 디폴트 값 0 이 나옴
+        if (paramId == 0) { // 입력된 id가 없다면 작업 중단
+            System.out.println("id를 입력해주세요");
+            return;
+        }
+
+        WiseSaying foundWiseSaying = findById(paramId);
+
+        if (foundWiseSaying == null) {
+            System.out.printf("%d번 명언은 존재하지 않습니다...\n", paramId);
+            return;
+        }
+
+        // 수정
+        System.out.printf("명언 (기존) : %s \n", foundWiseSaying.content);
+        System.out.printf("명언 : ");
+        foundWiseSaying.content = sc.nextLine();
+        System.out.printf("작가 (기존) : %s \n", foundWiseSaying.author);
+        System.out.printf("작가 : ");
+        foundWiseSaying.author = sc.nextLine();
+
+        System.out.printf("%d번 명언이 수정되었습니다.\n", paramId);
     }
 
     private void list(Rq rq) {
