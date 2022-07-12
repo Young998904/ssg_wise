@@ -33,10 +33,16 @@ public class WiseSayingController {
         // 수정
         System.out.printf("명언 (기존) : %s \n", foundWiseSaying.content);
         System.out.printf("명언 : ");
-        foundWiseSaying.content = sc.nextLine();
+//        foundWiseSaying.content = sc.nextLine();
+        // Repository 에 요청 하도록
+        String content = sc.nextLine();
         System.out.printf("작가 (기존) : %s \n", foundWiseSaying.author);
         System.out.printf("작가 : ");
-        foundWiseSaying.author = sc.nextLine();
+//        foundWiseSaying.author = sc.nextLine();
+        // Repository 에 요청 하도록
+        String author = sc.nextLine();
+
+        wiseSayingRepository.modify(paramId, content, author);
 
         System.out.printf("%d번 명언이 수정되었습니다.\n", paramId);
     }
@@ -44,8 +50,10 @@ public class WiseSayingController {
     public void list(Rq rq) {
         System.out.println("번호 / 작가 / 명언");
         System.out.println("===================");
-        for (int i = wiseSayingRepository.wiseSayings.size()-1; i >= 0; i--) {
-            WiseSaying wiseSaying_ = wiseSayingRepository.wiseSayings.get(i);
+        // WiseSayingRepository 에 있는 것을 바로 가지고 오는 것이 아닌 데이터를 요청
+        List<WiseSaying> wiseSayings = wiseSayingRepository.findAll();
+        for (int i = wiseSayings.size()-1; i >= 0; i--) {
+            WiseSaying wiseSaying_ = wiseSayings.get(i);
             System.out.printf("%d / %s / %s \n", wiseSaying_.id, wiseSaying_.content, wiseSaying_.author);
         }
     }
@@ -65,8 +73,10 @@ public class WiseSayingController {
             System.out.printf("%d번 명언은 존재하지 않습니다...\n", paramId);
             return;
         }
-
-        wiseSayingRepository.wiseSayings.remove(foundWiseSaying);
+//        List<WiseSaying> wiseSayings = wiseSayingRepository.findAll();
+//        wiseSayings.remove(foundWiseSaying);
+        // 삭제도 Repository 에 요청
+        wiseSayingRepository.remove(paramId);
 
         System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
     }
@@ -78,11 +88,16 @@ public class WiseSayingController {
         String content = sc.nextLine().trim();
         System.out.printf("작가 : ");
         String author = sc.nextLine().trim();
-        int id = ++wiseSayingRepository.wiseSayingLastId; // 마지막 번호 하나 증가 후 id에 담아둠
 
-        WiseSaying wiseSaying = new WiseSaying(id, content, author);
-        wiseSayingRepository.wiseSayings.add(wiseSaying);
+//        // Repository 발전
+//        int id = ++wiseSayingRepository.wiseSayingLastId; // 마지막 번호 하나 증가 후 id에 담아둠
+//
+//        WiseSaying wiseSaying = new WiseSaying(id, content, author);
+//        wiseSayingRepository.wiseSayings.add(wiseSaying);
 
-        System.out.printf("%d번 명언이 등록되었습니다. \n", wiseSayingRepository.wiseSayingLastId);
+        // Repository 에 별도 요청 (상하 관계에서 상이므로 가능)
+        WiseSaying wiseSaying = wiseSayingRepository.write(content, author);
+
+        System.out.printf("%d번 명언이 등록되었습니다. \n", wiseSaying.id);
     }
 }
