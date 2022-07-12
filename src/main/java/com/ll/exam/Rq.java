@@ -1,24 +1,31 @@
 package com.ll.exam;
 
 public class Rq {
-    public String url;
+    String url;
+    String path;
+    String queryStr;
+    // http://www.naver.com/abc/ddd/fff?age=10&id=40
+    // ? 를 기준으로 좌 (path) 우 (queryString)
     public Rq (String url) {
         this.url = url;
+        // getIntParam 과 getPath 에서 반복되는 내용 정리
+        String [] urlBits = url.split("\\?", 2);
+        this.path = urlBits[0];
+
+        if (urlBits.length == 2) { // queryString 없이 path만 있을 경우에 대비
+            this.queryStr = urlBits[1];
+        }
     }
     public int getIntParam(String paramName, int defaultValue) {
-        String [] urlBits = url.split("\\?", 2);
-        // 2의 역할 : 구분자 기준으로 최대 2개로만 나눈다.
 
         // 삭제명령어 뒤에 ?id 자체를 입력하지 않은경우
-        if (urlBits.length == 1) {
+        if (queryStr == null) {
             return defaultValue;
         }
 
-//        System.out.println(urlBits[1]); // 출력값 : id=10
-        urlBits= urlBits[1].split("&", 2);
-        // return 값 : ["id=10", "no=1"]
+        String[] bits= queryStr.split("&", 2);
 
-        for (String urlBit : urlBits) {
+        for (String urlBit : bits) {
             String[] paraNameAndValue = urlBit.split("=", 2);
 
             String paraName_ = paraNameAndValue[0];
@@ -33,8 +40,6 @@ public class Rq {
     }
 
     public String getPath() {
-        // "삭제?id=1"
-        String [] urlBits = url.split("\\?", 2);
-        return urlBits[0];
+        return path;
     }
 }
