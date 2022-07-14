@@ -19,12 +19,12 @@ public class WiseSaying {
                 ", author='" + author + '\'' +
                 '}';
     }
-    public String toJson() {
+    public String toJson() {// stripIndent() : 중괄호 없애는 역할
         return """
                 {
                     "id" : %d,
                     "content" : %s,
-                    "author" : %s,
+                    "author" : %s
                 }
                 """.stripIndent()
                 .formatted(id, content, author)
