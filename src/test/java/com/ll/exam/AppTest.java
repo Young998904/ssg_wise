@@ -114,4 +114,21 @@ public class AppTest {
         assertEquals("내 사전에 불가능은 없다.", map.get("content"));
         assertEquals("나폴레옹", map.get("author"));
     }
+
+    @Test
+    void 파일에_있는_JSON을_객체로_변환() {
+        Util.mkdir("test_data");
+        WiseSaying wiseSaying = new WiseSaying(1, "내 사전에 불가능은 없다.", "나폴레옹");
+        Util.saveToFile("test_data/1.json", wiseSaying.toJson());
+
+        String rs = Util.readFromFile("test_data/1.json");
+        Map<String, Object> map = Util.jsonToMap(rs);
+        WiseSaying loadedWiseSaying = new WiseSaying(map);
+
+        assertEquals(wiseSaying.id, loadedWiseSaying.id);
+        assertEquals(wiseSaying.content, loadedWiseSaying.content);
+        assertEquals(wiseSaying.author, loadedWiseSaying.author);
+        assertEquals(wiseSaying, loadedWiseSaying);
+       // 내용이 같아도 다른 객체로 인식됨 -> equals 함수 오버라이딩 필요
+    }
 }
