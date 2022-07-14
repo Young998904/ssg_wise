@@ -23,8 +23,8 @@ public class WiseSaying {
         return """
                 {
                     "id" : %d,
-                    "content" : %s,
-                    "author" : %s
+                    "content" : "%s",
+                    "author" : "%s"
                 }
                 """.stripIndent()
                 .formatted(id, content, author)
