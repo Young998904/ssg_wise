@@ -82,7 +82,12 @@ public class AppTest {
     void 파일에_내용쓰기() {
 //        Util.saveToFile("1.json", "내용"); // 정상 실행 시 최상위 경로에 1.json 이 생성됨
         Util.mkdir("test_data"); // 정상 실행 시 최상위 경로에 test_data 폴더 생성됨
-        Util.saveToFile("test_data/1.json", "내용\n내용"); // 정상 실행 시 test_data 폴더 경로에 1.json 이 생성됨
+        WiseSaying wiseSaying = new WiseSaying(1, "내 사전에 불가능은 없다.", "나폴레옹");
+        Util.saveToFile("test_data/1.json", wiseSaying.toJson());
+        // 정상 실행 시 test_data 폴더 경로에 1.json 이 생성됨
+        String rs = Util.readFromFile("test_data/1.json");
+
+        assertEquals(wiseSaying.toJson(), rs);
     }
 
     @Test
